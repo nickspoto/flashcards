@@ -1,8 +1,8 @@
-import { useState } from "react";
-
 /*General style of a flash card for the website. Update as needed for different themes
 or to change positioning. For now this takes a set input and generates a card, but we can make this 
 depend on a typeable field. Good start for now*/
+
+import { MouseEventHandler } from "react";
 
 const cardStyle = {
   perspective: "1000px",
@@ -38,13 +38,14 @@ const frontBackStyle = {
   fontSize: "2rem",
 };
 
-const FlashCard = (front: string, back: string, flip: boolean) => {
-  const [flipped, updateFlipped] = useState(flip);
-  const handleFlip = () => {
-    updateFlipped(!flipped);
-  };
+const FlashCard = (
+  front: string,
+  back: string,
+  flipped: boolean,
+  onFlip: MouseEventHandler<HTMLDivElement> | undefined
+) => {
   return (
-    <div onClick={handleFlip} style={cardStyle}>
+    <div onClick={onFlip} style={cardStyle}>
       <div
         style={{
           ...flashStyle,
