@@ -2,29 +2,50 @@ import path from "path";
 import express, { Express } from "express";
 import cors from "cors";
 import fetch from "node-fetch";
-
 const app: Express = express();
+import { getFlashCard, addCard } from "./cardmanager";
 
 const hostname = "0.0.0.0";
 const port = 8080;
-
 app.use(cors());
 app.use(express.json());
 
-app.get("/edit", async (req, res) => {
-  console.log("GET /api/weather was called");
+app.get("/edit/:id/:index", async (req, res) => {
+  console.log("GET /edit was called");
   try {
-    // const response = await fetch(
-    //   "https://api.open-meteo.com/v1/forecast?latitude=40.7411&longitude=73.9897&current=precipitation&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FNew_York&forecast_days=1"
-    // );
-    // const data = (await response.json()) as WeatherData;
-    // const output: WeatherResponse = {
-    //   raining: data.current.precipitation > 0.5,
-    // };
-    // res.json(output);
+    const id = req.params.id;
+    const index = req.params.index;
+    const cards = await getFlashCard(id, index);
+    if (cards === null) {
+      res.status(404).send({
+        error: `ERROR: person with id: ${id} not found in Firestore`,
+      });
+    } else {
+      res.status(200).send({
+        message: `SUCCESS retrieved cards from person with id: ${id} from the user collection in Firestore.`,
+        cards,
+      });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({
+      error: `ERROR: an error occurred in the /edit/:id/:index endpoint: ${error}`,
+    });
+  }
+});
+
+app.post("/edit/:id", async (req, res) => {
+  console.log("[POST] entering '/edit/:id' endpoint");
+  const card: string[] = req.body;
+  const id = req.params.id;
+  try {
+    await addCard(id, card);
+    res.status(200).send({
+      message: `SUCCESS added card ${card} to person with netid: ${id} to the people collection in Firestore`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: `ERROR: an error occurred in the /edit/:id endpoint: ${err}`,
+    });
   }
 });
 

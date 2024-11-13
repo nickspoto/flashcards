@@ -1,5 +1,4 @@
 import Editing from "../pages/Editing";
-import Counter from "../pages/Counter";
 import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
 
@@ -27,19 +26,14 @@ export const PATHS: {
     label: "Home",
     element: <HomePage />,
   },
-    {
-        link: "/login",
-        label: "Login",
-        element: <LoginPage />,
-    },
+  {
+    link: "/login",
+    label: "Login",
+    element: <LoginPage />,
+  },
   {
     link: "/edit",
     label: "Edit",
     element: <Editing />,
-  },
-  {
-    link: "/counter",
-    label: "Counter",
-    element: <Counter />,
   },
 ];

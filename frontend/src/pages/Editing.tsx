@@ -1,24 +1,11 @@
 import { useState } from "react";
 import FlashCard from "../components/FlashCard";
-// import { db } from "./firebase.ts";
-// const userCollectionRef = db.collection("users");
-//import "C:/Users/nicon/Web-trends/flashcards/backend/server.ts";
 
 const Editing = () => {
   const [cards, setCards] = useState<{ front: string; back: string }[]>([
     { front: "Starter card. Press add card below to add more.", back: "" },
   ]);
   const [flips, setFlips] = useState<boolean[]>([false]); //handles the flips for each card separately
-
-  const fetchEditData = async () =>
-    //adding a comment here to allow for commiting
-    fetch("https://randomuser.me/api") //this will be the get function - but replace with
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-
-  fetchEditData();
 
   const addCard = () => {
     setCards([...cards, { front: "", back: "" }]);
