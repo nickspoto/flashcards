@@ -1,5 +1,6 @@
 import admin, { ServiceAccount } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
+import dotenv from "dotenv";
 import serviceAccount from "../security_account.json";
 import { cert } from "firebase-admin/app";
 
