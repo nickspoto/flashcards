@@ -11,6 +11,7 @@ const Editing = () => {
   const [flips, setFlips] = useState<boolean[]>([false]); //handles the flips for each card separately
 
   const fetchEditData = async () =>
+    //adding a comment here to allow for commiting
     fetch("https://randomuser.me/api") //this will be the get function - but replace with
       .then((response) => response.json())
       .then((data) => {
