@@ -33,8 +33,8 @@ app.get("/edit/:id/:index", async (req, res) => {
   }
 });
 
-app.post("/edit/:id", async (req, res) => {
-  console.log("[POST] entering '/edit/:id' endpoint");
+app.put("/edit/:id", async (req, res) => {
+  console.log("[PUT] entering '/edit/:id' endpoint");
   const card: string[] = req.body;
   const id = req.params.id;
   try {

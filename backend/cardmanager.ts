@@ -8,7 +8,12 @@ export const getFlashCard = async (user: string, index: string) => {
   const snapshot = await personRef.get(); //gets the user
   if (snapshot.exists) {
     const cards = snapshot.data()?.cards || []; //some cards associated or none
-    return [cards[parseInt(index)], cards[parseInt(index) + 1]];
+    if (cards[parseInt(index)] != null && cards[parseInt(index) + 1] != null) {
+      return [cards[parseInt(index)], cards[parseInt(index) + 1]];
+    } else {
+      //anything other than a specific index inquiry just returns all the cards
+      return cards;
+    }
   }
 };
 
