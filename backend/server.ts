@@ -57,7 +57,7 @@ app.delete("/delete/:id/:index", async (req, res) => {
 });
 
 app.put("/edit/:id", async (req, res) => {
-  console.log("[Put] entering '/edit/:id' endpoint");
+  console.log("[PUT] entering '/edit/:id' endpoint");
   const card: string[] = req.body;
   const id = req.params.id;
   try {
