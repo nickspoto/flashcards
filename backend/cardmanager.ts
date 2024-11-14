@@ -12,6 +12,16 @@ export const getFlashCard = async (user: string, index: string) => {
   }
 };
 
+//delete flashcards associated with a user
+export const deleteCard = async (user: string, index: string) => {
+  const personRef = userCollectionRef.doc(user); //loads the specific user
+  const snapshot = await personRef.get(); //gets the user
+  if (snapshot.exists) {
+    const cards = snapshot.data()?.cards || []; //some cards associated or none
+    return [cards[parseInt(index)], cards[parseInt(index) + 1]];
+  }
+};
+
 //adds cards to a user
 export const addCard = async (id: string, card: string[]) => {
   const personRef = userCollectionRef.doc(id); //gets the unique user
@@ -23,5 +33,11 @@ export const addCard = async (id: string, card: string[]) => {
   const newCards = [...existingCards, ...card]; //add new cards
   return await personRef.update({ cards: newCards }); //creates a new user with no name
 };
+
+//adds user to server
+export const addUser = async (id: string) => {
+  return await userCollectionRef.doc(id)
+};
+
 
 export const addFlashCard = async (user: string, card: string[]) => {};
