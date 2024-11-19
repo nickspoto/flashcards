@@ -1,6 +1,7 @@
 import Editing from "../pages/Editing";
 import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
+import { useUser } from "../UserContext";
 
 /**
  * TODO: Modify this constant to point to the URL of your backend.
@@ -14,6 +15,25 @@ import LoginPage from "../pages/Login";
  * If you've already deployed your app (using `fly launch` or `fly deploy`),
  * you can find the name by running `flyctl status`, under App > Name.
  */
+type User = {
+  email: string;
+  password: string;
+};
+
+const LogIn = () => {
+  const { setUser } = useUser();
+  const handleLogin = (email: string, password: string) => {
+    const newUser: User = {
+      email,
+      password,
+    };
+    setUser(newUser);
+    console.log("User logged in:", newUser);
+  };
+  //now we have the user data! need a way to get it to the editing tab
+  return LoginPage(handleLogin);
+};
+
 export const BACKEND_BASE_PATH = "https://flashcards.fly.dev/api";
 
 export const PATHS: {
@@ -29,7 +49,7 @@ export const PATHS: {
   {
     link: "/login",
     label: "Login",
-    element: <LoginPage />,
+    element: <LogIn />,
   },
   {
     link: "/edit",

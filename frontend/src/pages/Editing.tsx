@@ -1,12 +1,16 @@
 import { useState } from "react";
 import FlashCard from "../components/FlashCard";
+import { useUser } from "../UserContext";
 
 const Editing = () => {
+  const { user } = useUser();
   const [cards, setCards] = useState<{ front: string; back: string }[]>([
-    { front: "Starter card. Press add card below to add more.", back: "" },
+    {
+      front: "Starter card. Press add card below to add more.",
+      back: `You are logged in as user ${user?.email ?? "anonymous"}.`,
+    },
   ]);
   const [flips, setFlips] = useState<boolean[]>([false]); //handles the flips for each card separately
-  const [user, setUser] = useState("");
   const [index, setIndex] = useState("");
 
   const addCard = () => {
@@ -50,7 +54,7 @@ const Editing = () => {
 
   const importCards = async () => {
     //convert to front, back
-    const cards = await addApiCard(user, index);
+    const cards = await addApiCard(user?.email ?? "", index);
     const frontBackConverter = [];
     for (let i = 0; i < cards.length - 1; i += 2) {
       const front = cards[i];
@@ -89,12 +93,6 @@ const Editing = () => {
           gap: "20px",
         }}
       >
-        <input
-          type="text"
-          placeholder="User"
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-        />
         <input
           type="text"
           placeholder="Index or all"
