@@ -1,6 +1,7 @@
 import Editing from "../pages/Editing";
 import HomePage from "../pages/Home";
 import LoginPage from "../pages/Login";
+import View from "../pages/View";
 import { useUser } from "../UserContext";
 
 /**
@@ -55,5 +56,10 @@ export const PATHS: {
     link: "/edit",
     label: "Edit",
     element: <Editing />,
+  },
+  {
+    link: "/view",
+    label: "View",
+    element: <View />,
   },
 ];

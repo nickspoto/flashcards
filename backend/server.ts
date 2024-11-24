@@ -3,26 +3,32 @@ import express, { Express } from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 const app: Express = express();
-import { getFlashCard, deleteCard, addCard, addUser } from "./cardmanager";
+import {
+  getFlashCard,
+  deleteCard,
+  addCardCarousel,
+  addUser,
+  getAllFlashCards,
+} from "./cardmanager";
 
 const hostname = "0.0.0.0";
 const port = 8080;
 app.use(cors());
 app.use(express.json());
 
-app.get("/edit/:id/:index", async (req, res) => {
+app.get("/edit/:id/:name", async (req, res) => {
   console.log("GET /edit was called");
   try {
     const id = req.params.id;
-    const index = req.params.index;
-    const cards = await getFlashCard(id, index);
+    const setName = req.params.name;
+    const cards = await getFlashCard(id, setName); //tries to get cards from the set 'setName'
     if (cards === null) {
       res.status(404).send({
-        error: `ERROR: person with id: ${id} not found in Firestore`,
+        error: `ERROR: no cards associated with set ${setName} with user id ${id} found in Firestore`,
       });
     } else {
       res.status(200).send({
-        message: `SUCCESS retrieved cards from person with id: ${id} from the user collection in Firestore.`,
+        message: `SUCCESS retrieved cards from person with id: ${id} from the user collection in Firestore`,
         cards,
       });
     }
@@ -33,19 +39,18 @@ app.get("/edit/:id/:index", async (req, res) => {
   }
 });
 
-app.delete("/delete/:id/:index", async (req, res) => {
-  console.log("Delete /delete was called");
+app.get("/view/:id", async (req, res) => {
+  console.log("GET /edit was called");
   try {
     const id = req.params.id;
-    const index = req.params.index;
-    const cards = await deleteCard(id, index);
+    const cards = await getAllFlashCards(id); //tries to get cards from the set 'setName'
     if (cards === null) {
       res.status(404).send({
-        error: `ERROR: person with id: ${id} not found in Firestore`,
+        error: `ERROR: no cards associated with user id ${id} found in Firestore`,
       });
     } else {
       res.status(200).send({
-        message: `SUCCESS deleted cards from person with id: ${id} from the user collection in Firestore.`,
+        message: `SUCCESS retrieved cards from person with id: ${id} from the user collection in Firestore`,
         cards,
       });
     }
@@ -56,22 +61,42 @@ app.delete("/delete/:id/:index", async (req, res) => {
   }
 });
 
-app.put("/edit/:id", async (req, res) => {
-  console.log("[PUT] entering '/edit/:id' endpoint");
-  const card: string[] = req.body;
+app.delete("/delete/:id/:name", async (req, res) => {
+  console.log("[DELETE] /delete was called");
   const id = req.params.id;
+  const setName = req.params.name;
   try {
-    await addCard(id, card);
+    await deleteCard(id, setName);
     res.status(200).send({
-      message: `SUCCESS added card ${card} to person with netid: ${id} to the people collection in Firestore`,
+      message: `SUCCESS deleted cards from person with id: ${id} from the user collection in Firestore.`,
     });
   } catch (err) {
     res.status(500).json({
-      error: `ERROR: an error occurred in the /edit/:id endpoint: ${err}`,
+      error: `ERROR: an error occurred in the /delete/:id/:index endpoint: ${err}. Could not delete set ${setName} from user ${id}`,
     });
   }
 });
 
+//adds a new set of cards to the db - should be post, but it can also update cards
+app.put("/edit/:id/:name", async (req, res) => {
+  console.log("[PUT] entering '/edit/:id' endpoint");
+  const cards = req.body.cards;
+  const id = req.params.id;
+  const name = req.params.name;
+  console.log(cards);
+  try {
+    await addCardCarousel(id, cards, name);
+    res.status(200).send({
+      message: `SUCCESS added cards ${cards} to person with netid: ${id} to the people collection in Firestore as a new set`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: `ERROR: an error occurred in the /edit/:id/:name endpoint: ${err}. Tried to add ${cards} with name ${name}`,
+    });
+  }
+});
+
+//adds a new user to the db
 app.post("/user/:id", async (req, res) => {
   console.log("[Post] entering '/user/:id' endpoint");
   const id = req.params.id;
