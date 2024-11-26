@@ -34,7 +34,7 @@ const AccountPage = (onLogin: { (email: string, password: string): void }) => {
   }
 
   return (
-    <center
+    <div
       style={{
         display: "flex",
         justifyContent: "center",
@@ -42,6 +42,7 @@ const AccountPage = (onLogin: { (email: string, password: string): void }) => {
         flexDirection: "column" as const,
         paddingRight: "20px",
         paddingLeft: "20px",
+        width: "100vw",
       }}
     >
       {user ? <h1>Logout {user.displayName}</h1>: <h1>Login Bozo</h1>}

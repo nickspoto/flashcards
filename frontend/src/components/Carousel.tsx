@@ -1,27 +1,20 @@
 import FlashCard from "./FlashCard";
 import { useState } from "react";
 
-const Carousel = (
-  cards: string[][],
-  currentCard: number,
-  front: string,
-  back: string
-) => {
-  const [sampleFlipped, updateSampleFlipped] = useState(false);
+const Carousel = (cards: string[][], currentCard: number) => {
+  const [flipped, updateFlipped] = useState(false);
 
-  const handleSampleFlip = () => {
-    updateSampleFlipped(!sampleFlipped);
+  const handleFlip = () => {
+    updateFlipped(!flipped);
   };
 
   return (
     <div>
       {FlashCard(
-        currentCard === cards.length || cards.length === 0
-          ? front
-          : cards[currentCard][0],
-        currentCard === cards.length ? back : cards[currentCard][1],
-        sampleFlipped, //initialize flipped state
-        handleSampleFlip //flip handling function
+        cards[currentCard][0],
+        cards[currentCard][1],
+        flipped, //initialize flipped state
+        handleFlip //flip handling function
       )}
     </div>
   );

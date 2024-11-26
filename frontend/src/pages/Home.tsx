@@ -148,10 +148,8 @@ const HomePage = () => {
       ></input>
       <div style={{ paddingBottom: "40px" }}>
         {Carousel(
-          sampleCards,
-          currentCardSample,
-          frontInputValue,
-          backInputValue
+          [...sampleCards, [frontInputValue, backInputValue]],
+          currentCardSample
         )}
       </div>
       <div>
