@@ -103,9 +103,9 @@ const HomePage = () => {
         }}
       >
         This is our flashcard web app. In it, you can make sets of flashcards
-        with any information to study for your upcoming tests. Right now, I am
-        typing to fill this space with useless text. See below for more
-        information.
+        with any information to study for your upcoming tests. Some examples of
+        usage are below: when you are ready, please log in through the link
+        above and navigate to view to see your flashcards.
       </p>
       <div style={{ paddingBottom: "40px" }}>
         {FlashCard(
