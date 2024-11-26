@@ -24,7 +24,7 @@ const LoginPage = (onLogin: { (email: string, password: string): void }) => {
   };
 
   return (
-    <center
+    <div
       style={{
         display: "flex",
         justifyContent: "center",
@@ -32,9 +32,10 @@ const LoginPage = (onLogin: { (email: string, password: string): void }) => {
         flexDirection: "column" as const,
         paddingRight: "20px",
         paddingLeft: "20px",
+        width: "100vw",
       }}
     >
-      <h1>Login Bozo</h1>
+      <h1>Login</h1>
       <p>Email:</p>
       <input
         placeholder="Your Email"
@@ -53,7 +54,7 @@ const LoginPage = (onLogin: { (email: string, password: string): void }) => {
       <button onClick={handleSubmitButton} style={{ color: "green" }}>
         Submit!
       </button>
-    </center>
+    </div>
   );
 };
 
