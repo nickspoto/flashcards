@@ -79,7 +79,7 @@ const AccountPage = (onLogin: { (email: string, password: string): void }) => {
         </div>
       )}
       </div>
-    </center>
+    </div>
   );
 };
 
