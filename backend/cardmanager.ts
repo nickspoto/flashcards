@@ -16,12 +16,14 @@ export const getAllFlashCards = async (user: string) => {
   const personRef = userCollectionRef.doc(user); //loads the specific user
   const sets = personRef.collection("cardSets"); //get all the sets from the user
   let cardCollection: string[][] = [];
+  let nameCollection: string[] = [];
   await sets.get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       cardCollection.push(doc.data().cards); //push each set seperately
+      nameCollection.push(doc.id); //push the name of the set
     });
   });
-  return cardCollection;
+  return { cards: cardCollection, setNames: nameCollection }; //TODO - Return a {cards: cards, name: name} object instead of just cards so we can edit/delete
 };
 
 //delete flashcard set associated with a user

@@ -43,7 +43,9 @@ app.get("/view/:id", async (req, res) => {
   console.log("GET /edit was called");
   try {
     const id = req.params.id;
-    const cards = await getAllFlashCards(id); //tries to get cards from the set 'setName'
+    const response = await getAllFlashCards(id); //tries to get all cards from the user
+    const cards = response.cards;
+    const setNames = response.setNames; //the names of all the flashcard sets
     if (cards === null) {
       res.status(404).send({
         error: `ERROR: no cards associated with user id ${id} found in Firestore`,
@@ -52,6 +54,7 @@ app.get("/view/:id", async (req, res) => {
       res.status(200).send({
         message: `SUCCESS retrieved cards from person with id: ${id} from the user collection in Firestore`,
         cards,
+        setNames,
       });
     }
   } catch (error) {

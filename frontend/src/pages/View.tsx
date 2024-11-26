@@ -2,20 +2,24 @@ import { useUser } from "../UserContext";
 import { SetStateAction, useEffect, useState } from "react";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import FlashCard from "../components/FlashCard";
+import { useNavigate } from "react-router-dom";
 
 const View = () => {
   const { user } = useUser();
-  const [userCards, setUserCards] = useState<string[][]>([["", ""]]);
+  const [userCards, setUserCards] = useState<string[][]>([]);
   const [currCard, setCurrCard] = useState([0]);
   const [flips, setFlips] = useState<boolean[]>([false]); //handles the flips for each carousel separately
   const [inputValue, setInputValue] = useState("");
   const [addMessage, setAddMessage] = useState("");
+  const [allSetNames, setAllSetNames] = useState<string[]>([]); //holds all the set names for the sets
 
   let currUser = null;
   if (user !== null) {
     currUser = user.email;
     //get all card sets associated with this user
   }
+
+  const navigate = useNavigate();
 
   const loadCards = async (user: string) => {
     const url = `http://localhost:8080/view/${user}`;
@@ -28,9 +32,10 @@ const View = () => {
         throw new Error("Network response was not ok");
       }
       console.log(response);
-      const cards = await response.json();
-      console.log(cards);
-      return cards.cards;
+      const serverResponse = await response.json();
+      setAllSetNames(serverResponse.setNames);
+      console.log(`Imported sets: ${allSetNames}`);
+      return serverResponse.cards;
       // Handle the response data as needed
     } catch (error) {
       console.error(
@@ -125,20 +130,59 @@ const View = () => {
     }
   };
 
-  //imports the cards if a user is here or if addSet is called
-  useEffect(() => {
-    const importCards = async () => {
-      console.log(`importing cards from ${user}}...`);
-      const cards = await loadCards(user?.email ?? "");
-      if (cards != null) {
-        setUserCards(cards);
-        setFlips(Array(cards.length).fill(false)); //initializes all carousel flips to false
-        setCurrCard(Array(cards.length).fill(0)); //initializes all current cards to 0
+  const deleteSet = async (setIndex: number) => {
+    const deletableName = allSetNames[setIndex];
+    const url = `http://localhost:8080/delete/${user?.email}/${deletableName}`;
+    console.log(`Deleting set ${deletableName}...`);
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+      });
+      console.log(response.url);
+      if (!response.ok) {
+        console.log("Could not delete this set. Please try again.");
+        throw new Error("Network response was not ok");
       }
-    };
+      console.log(`Deleted set ${inputValue}. Please check above.`);
+      console.log(response);
+      // Handle the response data as needed
+    } catch (error) {
+      console.log("Could not delete this set. Please try again.");
+      console.error(
+        "There has been a problem deleting this set of cards. Please try again.",
+        error
+      );
+    }
+    const message = addMessage;
+    setAddMessage("Deleting...");
+    setAddMessage(message);
     if (user) {
       importCards();
     }
+  };
+
+  const handleEditClick = (setName: string) => {
+    console.log(`navigating to /edit/${setName}...`);
+    navigate(`/edit/${setName}`);
+    //also want to call import setName
+  };
+
+  const importCards = async () => {
+    console.log(`importing cards from ${user?.email}...`);
+    const cards = await loadCards(user?.email ?? "");
+    if (cards != null) {
+      setUserCards(cards);
+      setFlips(Array(cards.length).fill(false)); //initializes all carousel flips to false
+      setCurrCard(Array(cards.length).fill(0)); //initializes all current cards to 0
+    }
+  };
+
+  //imports the cards if a user is here or if addSet is called
+  useEffect(() => {
+    if (user) {
+      importCards();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, addMessage]); //changes when the user changes or when a set is added (changes the message when a set gets added)
 
   return (
@@ -156,6 +200,7 @@ const View = () => {
           ? `You are currently logged in as user ${user?.email}. Your flash card sets are displayed below in their carousels.   `
           : "You are not currently logged in. Please navigate to the login tab and login to view all your flashcard sets below."}
       </h1>
+
       <div>
         {userCards.map((cards, index) => (
           <div
@@ -168,6 +213,7 @@ const View = () => {
               alignItems: "center", //horizontal centering
             }}
           >
+            <h2>{allSetNames[index]}</h2>
             {FlashCard(
               convertCards3d(cards)[currCard[index]][0],
               convertCards3d(cards)[currCard[index]][1],
@@ -191,6 +237,7 @@ const View = () => {
                 <ChevronLeftCircle size={64} width={"200px"} />
               </button>
               <button
+                onClick={() => deleteSet(index)}
                 style={{
                   marginRight: "30px",
                   borderRadius: "20px",
@@ -201,6 +248,7 @@ const View = () => {
               </button>
 
               <button
+                onClick={() => handleEditClick(allSetNames[index])}
                 style={{
                   borderRadius: "20px",
                   minWidth: "100px",
@@ -218,25 +266,42 @@ const View = () => {
           </div>
         ))}
       </div>
-      <button
-        onClick={() => addSet(inputValue)}
-        style={{
-          marginBottom: "20px",
-          padding: "15px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        Add new set
-      </button>
-      <input
-        placeholder="Type set name here"
-        value={inputValue}
-        style={{ marginBottom: "10px" }}
-        onChange={handleInputChange}
-      ></input>
-      <div>{addMessage}</div>
+      {user ? (
+        <div
+          style={{
+            paddingTop: "40px",
+            paddingLeft: "15px",
+            paddingRight: "15px",
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <button
+            onClick={() => addSet(inputValue)}
+            style={{
+              marginBottom: "20px",
+              padding: "15px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Add new set
+          </button>
+
+          <input
+            placeholder="Type set name here"
+            value={inputValue}
+            style={{ marginBottom: "10px" }}
+            onChange={handleInputChange}
+          ></input>
+          <div>{addMessage}</div>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

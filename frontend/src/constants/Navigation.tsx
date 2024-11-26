@@ -52,14 +52,15 @@ export const PATHS: {
     label: "Login",
     element: <LogIn />,
   },
-  {
-    link: "/edit",
-    label: "Edit",
-    element: <Editing />,
-  },
+
   {
     link: "/view",
     label: "View",
     element: <View />,
+  },
+  {
+    link: "/edit/:setName",
+    label: "",
+    element: <Editing />,
   },
 ];

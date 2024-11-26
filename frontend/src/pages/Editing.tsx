@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FlashCard from "../components/FlashCard";
 import { useUser } from "../UserContext";
+import { useParams } from "react-router-dom";
 
 const Editing = () => {
   const { user } = useUser();
+  const { setName } = useParams<{ setName: string }>();
   const [cards, setCards] = useState<{ front: string; back: string }[]>([
     {
       front:
@@ -15,7 +17,6 @@ const Editing = () => {
     "No set imported yet."
   );
   const [flips, setFlips] = useState<boolean[]>([false]); //handles the flips for each card separately
-  const [setName, setSetName] = useState("");
 
   const addCard = () => {
     setCards([...cards, { front: "", back: "" }]);
@@ -60,7 +61,7 @@ const Editing = () => {
     }
   };
 
-  const importCards = async () => {
+  const importCards = async (setName: string) => {
     //convert to front, back
     console.log(`importing ${setName}...`);
     const cards = await loadCards(user?.email ?? "", setName);
@@ -72,6 +73,13 @@ const Editing = () => {
     }
     setCards(frontBackConverter);
   };
+
+  useEffect(() => {
+    if (setName && user) {
+      importCards(setName);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setName, user]);
 
   const saveEdits = async () => {
     console.log(`saving cards ${setName}...`);
@@ -133,39 +141,9 @@ const Editing = () => {
       style={{ paddingLeft: "15px", display: "flex", flexDirection: "column" }}
     >
       <h1>
-        Edit your cards in this tab. For now, this is just an empty flashcard,
-        but you will eventually be able to navigate to this page by clicking a
-        button on a flashcard to edit it.
+        Edit your cards in this tab. You can get here from any of your flashcard
+        sets in the view tab. Make sure to save your edits below!
       </h1>
-      <div
-        id="import"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "20px",
-          marginBottom: "20px",
-          gap: "20px",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Flashcard set name"
-          value={setName}
-          onChange={(e) => setSetName(e.target.value)}
-        />
-      </div>
-      <button
-        onClick={importCards}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignSelf: "center",
-          marginBottom: "20px",
-          width: "25%",
-        }}
-      >
-        Import cards from current user and setName
-      </button>
 
       <div
         style={{
@@ -189,6 +167,8 @@ const Editing = () => {
                 justifyContent: "center",
                 marginTop: "10px",
                 gap: "20px",
+                flexDirection: "column",
+                alignItems: "center", //horizontal centering
               }}
             >
               {" "}

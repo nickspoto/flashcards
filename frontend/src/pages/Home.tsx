@@ -137,7 +137,9 @@ const HomePage = () => {
       <input
         placeholder="front"
         value={frontInputValue}
-        style={{ marginBottom: "10px" }}
+        style={{
+          marginBottom: "10px",
+        }}
         onChange={handleFrontInputChange}
       ></input>
       <input
@@ -146,7 +148,13 @@ const HomePage = () => {
         style={{ marginBottom: "10px" }}
         onChange={handleBackInputChange}
       ></input>
-      <div style={{ paddingBottom: "40px" }}>
+      <div
+        style={{
+          paddingBottom: "40px",
+          overflowWrap: "break-word" as const,
+          wordWrap: "break-word" as const,
+        }}
+      >
         {Carousel(
           [...sampleCards, [frontInputValue, backInputValue]],
           currentCardSample

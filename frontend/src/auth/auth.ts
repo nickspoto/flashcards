@@ -1,18 +1,18 @@
 import { auth } from "../utils/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
 const provider = new GoogleAuthProvider();
 
 export const signIn = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
-    console.log("result is"+result)
+    console.log("result is" + result);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential?.accessToken;
     const user = result.user;
     console.log(user);
 
     return { token, user };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const code = error.code;
     const message = error.message;

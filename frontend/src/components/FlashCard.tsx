@@ -6,6 +6,8 @@ import { MouseEventHandler } from "react";
 
 const cardStyle = {
   perspective: "1000px",
+  overflowWrap: "break-word" as const,
+  wordWrap: "break-word" as const,
 };
 
 const flashStyle = {
@@ -13,8 +15,10 @@ const flashStyle = {
   border: "solid rgba(0, 0, 0, 0.2) 1px",
   boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.2)",
   borderRadius: "20px",
-  height: "400px",
-  width: "800px", //this is just for now - eventually phase into relative width
+  minHeight: "400px",
+  height: "auto",
+  width: "800px",
+  maxWidth: "800px", //this is just for now - eventually phase into relative width
   display: "flex",
   flexDirection: "column" as const,
   alignItems: "center",
@@ -22,20 +26,26 @@ const flashStyle = {
   marginLeft: "20px",
   transition: "transform .5s",
   transformStyle: "preserve-3d" as const,
+  overflowWrap: "break-word" as const,
+  wordWrap: "break-word" as const,
 };
 
 const frontBackStyle = {
   position: "absolute" as const,
-  height: "100%",
-  width: "100%",
+  height: "auto",
+  width: "100%", // Ensure it takes the full width of the container
+  maxWidth: "90%", // Limit the width to 90% to ensure padding space
   backfaceVisibility: "hidden" as const,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   borderRadius: "20px",
-  paddingLeft: "10px",
-  paddingRight: "10px",
+  padding: "10px", // Combined padding for simplicity
   fontSize: "2rem",
+  overflowWrap: "break-word" as const,
+  wordWrap: "break-word" as const,
+  whiteSpace: "normal" as const, // Ensure normal white space handling
+  textAlign: "center" as const, // Center text alignment for better wrapping
 };
 
 const FlashCard = (

@@ -40,7 +40,8 @@
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.15.0",
         "sort-by": "^1.2.0",
-        "tailwind-merge": "^2.5.4"
+        "tailwind-merge": "^2.5.4",
+        "clsx": "^1.2.1"
     },
     "devDependencies": {
         "@types/node": "^20.8.9",

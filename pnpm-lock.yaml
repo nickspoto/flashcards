@@ -120,6 +120,9 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
+      clsx:
+        specifier: ^1.2.1
+        version: 1.2.1
       dayjs:
         specifier: ^1.11.9
         version: 1.11.9
@@ -1871,6 +1874,10 @@ packages:
 
   clsx@1.1.1:
     resolution: {integrity: sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==}
+    engines: {node: '>=6'}
+
+  clsx@1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
 
   clsx@2.0.0:
@@ -5341,6 +5348,8 @@ snapshots:
       wrap-ansi: 7.0.0
 
   clsx@1.1.1: {}
+
+  clsx@1.2.1: {}
 
   clsx@2.0.0: {}
 
