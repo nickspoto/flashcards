@@ -1,6 +1,6 @@
 import Editing from "../pages/Editing";
 import HomePage from "../pages/Home";
-import LoginPage from "../pages/Login";
+import AccountPage from "../pages/Account";
 import { useUser } from "../UserContext";
 
 /**
@@ -31,7 +31,7 @@ const LogIn = () => {
     console.log("User logged in:", newUser);
   };
   //now we have the user data! need a way to get it to the editing tab
-  return LoginPage(handleLogin);
+  return AccountPage(handleLogin);
 };
 
 export const BACKEND_BASE_PATH = "https://flashcards.fly.dev/api";
