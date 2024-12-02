@@ -136,6 +136,14 @@ const Editing = () => {
     return newStr;
   };
 
+  const deleteCard = (index: number) => {
+    const newCards = cards.filter((_, i) => i !== index);
+    const newFlips = flips.filter((_, i) => i !== index);
+    setCards(newCards);
+    setFlips(newFlips);
+    console.log(`current cards: ${formatSample()}`);
+  };
+
   return (
     <div
       style={{ paddingLeft: "15px", display: "flex", flexDirection: "column" }}
@@ -164,27 +172,49 @@ const Editing = () => {
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                marginTop: "10px",
-                gap: "20px",
                 flexDirection: "column",
-                alignItems: "center", //horizontal centering
+                alignItems: "center",
+                gap: "10px",
+                marginTop: "10px",
               }}
             >
-              {" "}
-              {/*input buttons here*/}
-              <input
-                type="text"
-                placeholder="Front"
-                value={card.front}
-                onChange={(e) => updateCard(index, e.target.value, card.back)}
-              />
-              <input
-                type="text"
-                placeholder="Back"
-                value={card.back}
-                onChange={(e) => updateCard(index, card.front, e.target.value)}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "20px",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Front"
+                  value={card.front}
+                  onChange={(e) => updateCard(index, e.target.value, card.back)}
+                />
+                <input
+                  type="text"
+                  placeholder="Back"
+                  value={card.back}
+                  onChange={(e) =>
+                    updateCard(index, card.front, e.target.value)
+                  }
+                />
+              </div>
+              <button
+                onClick={() => deleteCard(index)}
+                style={{
+                  borderRadius: "10px",
+                  minWidth: "100px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}
