@@ -1,7 +1,9 @@
 import admin, { ServiceAccount } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
+import { configDotenv } from "dotenv";
 import { cert } from "firebase-admin/app";
 
+configDotenv();
 const private_key_id = process.env.PRIVATE_KEY_ID;
 const private_key = process.env.PRIVATE_KEY;
 
@@ -26,6 +28,7 @@ try {
   });
 } catch (error) {
   console.error("Error initializing Firebase Admin:", error);
+  console.log(private_key + "\n\n\n\n\n\n\n\n\n\n");
 }
 
 const db = getFirestore();
