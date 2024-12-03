@@ -22,7 +22,7 @@ const View = () => {
   const navigate = useNavigate();
 
   const loadCards = async (user: string) => {
-    const url = `http://localhost:8080/view/${user}`;
+    const url = `http://flashcards-ms4f.netlify.app/view/${user}`;
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -100,7 +100,7 @@ const View = () => {
 
   const addSet = async (setName: string) => {
     if (user !== null) {
-      const url = `http://localhost:8080/edit/${user?.email}/${setName}`;
+      const url = `http://flashcards-ms4f.netlify.app/edit/${user?.email}/${setName}`;
       setAddMessage(`Adding set ${inputValue}...`);
       try {
         const response = await fetch(url, {
@@ -132,7 +132,7 @@ const View = () => {
 
   const deleteSet = async (setIndex: number) => {
     const deletableName = allSetNames[setIndex];
-    const url = `http://localhost:8080/delete/${user?.email}/${deletableName}`;
+    const url = `http://flashcards-ms4f.netlify.app/delete/${user?.email}/${deletableName}`;
     console.log(`Deleting set ${deletableName}...`);
     try {
       const response = await fetch(url, {

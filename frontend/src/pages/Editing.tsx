@@ -37,7 +37,7 @@ const Editing = () => {
   };
 
   const loadCards = async (user: string, setName: string) => {
-    const url = `http://localhost:8080/edit/${user}/${setName}`;
+    const url = `http://flashcards-ms4f.netlify.app/edit/${user}/${setName}`;
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -83,7 +83,9 @@ const Editing = () => {
 
   const saveEdits = async () => {
     console.log(`saving cards ${setName}...`);
-    const url = `http://localhost:8080/edit/${user?.email ?? ""}/${setName}`;
+    const url = `http://flashcards-ms4f.netlify.app/edit/${
+      user?.email ?? ""
+    }/${setName}`;
     try {
       const response = await fetch(url, {
         method: "PUT",

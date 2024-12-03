@@ -20,10 +20,13 @@ const serviceAccount = {
     "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-bpfjj%40flashcards-23354.iam.gserviceaccount.com",
   universe_domain: "googleapis.com",
 };
-
-const app = admin.initializeApp({
-  credential: cert(serviceAccount as ServiceAccount),
-});
+try {
+  const app = admin.initializeApp({
+    credential: cert(serviceAccount as ServiceAccount),
+  });
+} catch (error) {
+  console.error("Error initializing Firebase Admin:", error);
+}
 
 const db = getFirestore();
 export { db };
