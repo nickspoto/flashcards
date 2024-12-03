@@ -35,7 +35,8 @@ const LogIn = () => {
  * If you've already deployed your app (using `fly launch` or `fly deploy`),
  * you can find the name by running `flyctl status`, under App > Name.
  */
-export const BACKEND_BASE_PATH = "https://flashcards-ms4f.fly.dev/api";
+export const BACKEND_BASE_PATH =
+  "https://flashcards-weathered-sun-9422.fly.dev/api";
 
 export const PATHS: {
   link: string;
