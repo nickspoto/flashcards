@@ -184,7 +184,6 @@ const View = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, addMessage]); //changes when the user changes or when a set is added (changes the message when a set gets added)
-
   return (
     <div
       style={{
