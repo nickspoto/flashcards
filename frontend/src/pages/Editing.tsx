@@ -18,6 +18,11 @@ const Editing = () => {
   );
   const [flips, setFlips] = useState<boolean[]>([false]); //handles the flips for each card separately
 
+  const URL =
+    process.env.NODE_ENV === "production"
+      ? "https://backend-divine-breeze-989.fly.dev"
+      : "http://localhost:8080";
+
   const addCard = () => {
     setCards([...cards, { front: "", back: "" }]);
     setFlips([...flips, false]);
@@ -37,7 +42,7 @@ const Editing = () => {
   };
 
   const loadCards = async (user: string, setName: string) => {
-    const url = `http://localhost:8080/edit/${user}/${setName}`;
+    const url = `${URL}/edit/${user}/${setName}`;
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -83,7 +88,7 @@ const Editing = () => {
 
   const saveEdits = async () => {
     console.log(`saving cards ${setName}...`);
-    const url = `http://localhost:8080/edit/${user?.email ?? ""}/${setName}`;
+    const url = `${URL}/edit/${user?.email ?? ""}/${setName}`;
     try {
       const response = await fetch(url, {
         method: "PUT",

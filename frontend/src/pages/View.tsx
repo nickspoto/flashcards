@@ -18,11 +18,15 @@ const View = () => {
     currUser = user.email;
     //get all card sets associated with this user
   }
+  const URL =
+    process.env.NODE_ENV === "production"
+      ? "https://backend-divine-breeze-989.fly.dev"
+      : "http://localhost:8080";
 
   const navigate = useNavigate();
 
   const loadCards = async (user: string) => {
-    const url = `http://localhost:8080/view/${user}`;
+    const url = `${URL}/view/${user}`;
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -100,7 +104,7 @@ const View = () => {
 
   const addSet = async (setName: string) => {
     if (user !== null) {
-      const url = `http://localhost:8080/edit/${user?.email}/${setName}`;
+      const url = `${URL}/edit/${user?.email}/${setName}`;
       setAddMessage(`Adding set ${inputValue}...`);
       try {
         const response = await fetch(url, {
@@ -132,7 +136,7 @@ const View = () => {
 
   const deleteSet = async (setIndex: number) => {
     const deletableName = allSetNames[setIndex];
-    const url = `http://localhost:8080/delete/${user?.email}/${deletableName}`;
+    const url = `${URL}/delete/${user?.email}/${deletableName}`;
     console.log(`Deleting set ${deletableName}...`);
     try {
       const response = await fetch(url, {

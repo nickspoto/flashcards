@@ -1,11 +1,12 @@
 import admin, { ServiceAccount } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
-import { configDotenv } from "dotenv";
+import { config } from "dotenv";
 import { cert } from "firebase-admin/app";
 
-configDotenv();
+config();
 const private_key_id = process.env.PRIVATE_KEY_ID;
-const private_key = process.env.PRIVATE_KEY;
+let private_key = process.env.PRIVATE_KEY;
+private_key = private_key?.replace(/\\n/g, "\n");
 
 const serviceAccount = {
   type: "service_account",
@@ -22,14 +23,9 @@ const serviceAccount = {
     "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-bpfjj%40flashcards-23354.iam.gserviceaccount.com",
   universe_domain: "googleapis.com",
 };
-try {
-  const app = admin.initializeApp({
-    credential: cert(serviceAccount as ServiceAccount),
-  });
-} catch (error) {
-  console.error("Error initializing Firebase Admin:", error);
-  console.log(private_key + "\n\n\n\n\n\n\n\n\n\n");
-}
+admin.initializeApp({
+  credential: cert(serviceAccount as ServiceAccount),
+});
 
 const db = getFirestore();
 export { db };

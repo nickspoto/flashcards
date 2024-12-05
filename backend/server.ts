@@ -1,8 +1,7 @@
-import path from "path";
-import express, { Express } from "express";
+import express from "express";
 import cors from "cors";
-import fetch from "node-fetch";
-const app: Express = express();
+
+const app = express();
 import {
   getFlashCard,
   deleteCard,
